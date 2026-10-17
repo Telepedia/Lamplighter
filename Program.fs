@@ -2,6 +2,7 @@ module Lamplighter.App
 
 open System
 open System.IO
+open Lamplighter.Shared
 open Microsoft.AspNetCore.Builder
 open Microsoft.AspNetCore.Cors.Infrastructure
 open Microsoft.AspNetCore.Hosting
@@ -52,10 +53,15 @@ let configureLogging (builder : ILoggingBuilder) =
     builder.AddConsole()
            .AddDebug() |> ignore
 
+let connectionString = "Data Source=lamplighter.db;Foreign Keys=True"
+
+let createDbConnection = Database.createConnection connectionString
+    
 [<EntryPoint>]
 let main args =
     let contentRoot = Directory.GetCurrentDirectory()
     let webRoot     = Path.Combine(contentRoot, "WebRoot")
+    Migrations.run createDbConnection
     Host.CreateDefaultBuilder(args)
         .ConfigureWebHostDefaults(
             fun webHostBuilder ->

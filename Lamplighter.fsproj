@@ -7,11 +7,15 @@
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="Donald" Version="10.1.0" />
     <PackageReference Include="Giraffe" Version="6.4.0" />
     <PackageReference Include="Giraffe.ViewEngine" Version="1.4.*" />
+    <PackageReference Include="Microsoft.Data.Sqlite" Version="10.0.13" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Shared\Layout.fs" />
+    <Compile Include="Shared\Database.fs" />
+    <Compile Include="Shared\Migrations.fs" />
     <Compile Include="Home\Views.fs" />
     <Compile Include="Home\Handlers.fs" />
     <Compile Include="Home\Routes.fs" />
