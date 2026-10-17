@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk.Web">
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <AssemblyName>Lamplighter</AssemblyName>
     <EnableDefaultContentItems>false</EnableDefaultContentItems>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -11,6 +11,11 @@
     <PackageReference Include="Giraffe.ViewEngine" Version="1.4.*" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Shared\Layout.fs" />
+    <Compile Include="Home\Views.fs" />
+    <Compile Include="Home\Handlers.fs" />
+    <Compile Include="Home\Routes.fs" />
+    <Compile Include="Web\Router.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
   <ItemGroup>

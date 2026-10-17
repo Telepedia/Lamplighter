@@ -1,10 +1,71 @@
-body {
-    font-family: Arial, Helvetica, sans-serif;
-    color: #333;
-    font-size: .9em;
+@import 'reset.css';
+@import 'home.css';
+
+@font-face {
+    font-family: 'Quicksand';
+    src: url('/fonts/Quicksand-VariableFont_wght.ttf') format('truetype');
+    font-weight: 300 700;
+    font-style: normal;
+    font-display: swap;
 }
 
-h1 {
-    font-size: 1.5em;
-    color: #334499;
+@font-face {
+    font-family: 'Rubik';
+    src: url('/fonts/Rubik-VariableFont_wght.ttf') format('truetype');
+    font-weight: 300 900;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Rubik';
+    src: url('/fonts/Rubik-Italic-VariableFont_wght.ttf') format('truetype');
+    font-weight: 300 900;
+    font-style: italic;
+    font-display: swap;
+}
+
+:root {
+    --body-primary: 'Quicksand', Helvetica, Arial, sans-serif;
+}
+
+.lamplighter-header {
+    height: 50px;
+    background: #322659;
+    font-family: 'Rubik', Helvetica, Arial, sans-serif;
+    color: #fff;
+    box-sizing: border-box;
+
+    .lamplighter-header__content {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 100%;
+        margin-inline: 24px;
+    }
+
+    .lamplighter-logo {
+        font-weight: bolder;
+        font-size: 1.25rem;
+    }
+}
+
+main {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    box-sizing: border-box;
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 20px;
+}
+
+a {
+    text-decoration: none;
+}
+
+main {
+    font-family: var(--body-primary);
+    font-weight: 600;
 }
