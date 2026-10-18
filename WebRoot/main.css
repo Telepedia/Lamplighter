@@ -1,6 +1,7 @@
 @import 'reset.css';
 @import 'home.css';
 @import 'config.css';
+@import 'edits.css';
 
 @font-face {
     font-family: 'Quicksand';
@@ -69,4 +70,46 @@ a {
 main {
     font-family: var(--body-primary);
     font-weight: 600;
+}
+
+main table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid #dcd9e2;
+    font-size: 0.875rem;
+    font-variant-numeric: tabular-nums;
+}
+
+main th,
+main td {
+    padding: 8px 12px;
+    text-align: left;
+    vertical-align: top;
+}
+
+main th {
+    font-weight: 600;
+    font-family: 'Rubik', Helvetica, Arial, sans-serif;
+    color: #322659;
+    font-size: 1em;
+    white-space: nowrap;
+    background: #ece8f6;
+    border-bottom: 1px solid #dcd9e2;
+}
+
+main td {
+    border-bottom: 1px solid #e2e2e4;
+}
+
+main tbody tr:hover {
+    background: #faf9fc;
+}
+
+main td a {
+    color: #322659;
+    font-weight: 500;
+}
+
+main td a:hover {
+    text-decoration: underline;
 }
