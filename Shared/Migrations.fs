@@ -18,13 +18,19 @@ let private migrations = [
         summary     TEXT NOT NULL DEFAULT '',
         diff        TEXT NOT NULL,
         received    TEXT NOT NULL,
-        config_version_id INTEGER REFERENCES config_versions (id),
+        config_version_id INTEGER NOT NULL REFERENCES config_versions (id),
         score       REAL CHECK (score BETWEEN 0 AND 1),
-        status      TEXT NOT NULL DEFAULT 'pending'
+        scoring_status    TEXT NOT NULL DEFAULT 'pending' CHECK (scoring_status IN ('pending', 'scored', 'failed')),
+        scoring_error   TEXT,
+        scoring_attempts    INTEGER NOT NULL DEFAULT 0,
+        review_status   TEXT NOT NULL DEFAULT 'unreviewed' CHECK (review_status IN ('unreviewed', 'approved', 'reverted')),
+        reviewed_at     TEXT,
+        reviewed_by     TEXT
     )
     """
 
-    "CREATE INDEX IF NOT EXISTS idx_edits_status ON edits (status)"
+    "CREATE INDEX IF NOT EXISTS idx_edits_scoring_status ON edits (scoring_status)"
+    "CREATE INDEX IF NOT EXISTS idx_edits_review_queue ON edits (review_status, score)"
     
     """
     CREATE TABLE IF NOT EXISTS config_versions (

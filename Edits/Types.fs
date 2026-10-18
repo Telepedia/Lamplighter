@@ -1,7 +1,13 @@
 module Lamplighter.Edits.Types
 
-type ReviewStatus =
+type ScoringStatus =
     | Pending
+    | Scored
+    | Failed
+
+// these types we reserve for human action 
+type ReviewStatus =
+    | Unreviewed
     | Approved
     | Reverted
 
