@@ -29,7 +29,7 @@ let private saveEdit (createConnection: unit -> IDbConnection) (edit: IncomingEd
                 "editor", SqlType.String edit.Editor
                 "diff", SqlType.String edit.Diff
                 "received", SqlType.String edit.Timestamp
-                "summary", SqlType.String edit.Summary
+                "summary", SqlType.String (edit.Summary |> Option.ofObj |> Option.defaultValue "")
             ]
             |> Db.Async.querySingle (fun (rd: DbDataReader) -> rd.ReadInt64 "id")
     }
