@@ -1,0 +1,95 @@
+.lamplighter-config {
+    margin-top: 1em;
+    grid-column: span 12;
+}
+
+.lamplighter-config h2 {
+    font-size: 2rem;
+    font-weight: 900;
+    font-family: 'Rubik', Helvetica, Arial, sans-serif;
+}
+
+.lamplighter-config h3 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+    font-family: 'Rubik', Helvetica, Arial, sans-serif;
+}
+
+.lamplighter-config h4 {
+    font-weight: 700;
+    margin-top: 12px;
+}
+
+.lamplighter-config__description {
+    margin-top: 10px;
+}
+
+.lamplighter-config__section {
+    margin-top: 32px;
+}
+
+.lamplighter-config ol {
+    list-style: decimal;
+    padding-left: 1.5em;
+}
+
+.lamplighter-config__details {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    gap: 4px 16px;
+}
+
+.lamplighter-config__details pre {
+    white-space: pre-wrap;
+}
+
+.lamplighter-config__errors {
+    margin: 12px 0;
+    list-style: disc;
+    padding-left: 1.5em;
+}
+
+.lamplighter-config__form {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+    max-width: 40rem;
+    margin-top: 16px;
+}
+
+.lamplighter-config__form label {
+    margin-top: 10px;
+}
+
+.lamplighter-config__form textarea,
+.lamplighter-config__form input[type="text"] {
+    width: 100%;
+}
+
+.lamplighter-config input,
+.lamplighter-config select,
+.lamplighter-config textarea,
+.lamplighter-config button {
+    border: 1px solid;
+    padding: 4px 8px;
+}
+
+.lamplighter-config__actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-top: 16px;
+}
+
+.lamplighter-config__history {
+    width: 100%;
+}
+
+.lamplighter-config__history th,
+.lamplighter-config__history td {
+    text-align: left;
+    vertical-align: top;
+    padding: 6px 16px 6px 0;
+}

@@ -1,6 +1,7 @@
 module Lamplighter.App
 
 open System
+open System.Data
 open System.IO
 open Lamplighter.Shared
 open Microsoft.AspNetCore.Builder
@@ -45,18 +46,19 @@ let configureApp (app : IApplicationBuilder) =
         .UseStaticFiles()
         .UseGiraffe(routes)
 
+let connectionString = "Data Source=lamplighter.db;Foreign Keys=True"
+
+let createDbConnection = Database.createConnection connectionString
+
 let configureServices (services : IServiceCollection) =
     services.AddCors()    |> ignore
     services.AddGiraffe() |> ignore
+    services.AddSingleton<unit -> IDbConnection>(createDbConnection) |> ignore
 
 let configureLogging (builder : ILoggingBuilder) =
     builder.AddConsole()
            .AddDebug() |> ignore
 
-let connectionString = "Data Source=lamplighter.db;Foreign Keys=True"
-
-let createDbConnection = Database.createConnection connectionString
-    
 [<EntryPoint>]
 let main args =
     let contentRoot = Directory.GetCurrentDirectory()

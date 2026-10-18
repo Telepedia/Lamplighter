@@ -22,6 +22,11 @@
     <Compile Include="Edits\Types.fs" />
     <Compile Include="Edits\Handlers.fs" />
     <Compile Include="Edits\Routes.fs" />
+    <Compile Include="Config\Types.fs" />
+    <Compile Include="Config\Data.fs" />
+    <Compile Include="Config\Views.fs" />
+    <Compile Include="Config\Handlers.fs" />
+    <Compile Include="Config\Routes.fs" />
     <Compile Include="Web\Router.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
