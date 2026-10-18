@@ -4,6 +4,7 @@ open System.Data
 open System.Data.Common
 open System.Threading.Tasks
 open Donald
+open Lamplighter.Home
 open Microsoft.AspNetCore.Http
 open Giraffe
 open Lamplighter.Edits.Types
@@ -63,3 +64,8 @@ let ingestEditFromMediaWiki : HttpHandler =
                 | Some _ -> return! Successful.ACCEPTED "Ingested" next ctx
                 | None -> return! ServerErrors.SERVICE_UNAVAILABLE "There is no active configuration. Please set up the Lamplighter config." next ctx
         }
+
+let index : HttpHandler =
+    fun next ctx ->
+        let edits = Data.listEdits (ctx.GetService<unit -> IDbConnection>())
+        htmlView (Views.indexView edits) next ctx

@@ -4,5 +4,6 @@ open Giraffe
 
 let routes : HttpHandler =
     choose [
+        GET >=> route "/edits" >=> Handlers.index
         POST >=> route "/ingest" >=> Handlers.ingestEditFromMediaWiki
     ]

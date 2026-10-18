@@ -20,6 +20,8 @@
     <Compile Include="Home\Handlers.fs" />
     <Compile Include="Home\Routes.fs" />
     <Compile Include="Edits\Types.fs" />
+    <Compile Include="Edits\Data.fs" />
+    <Compile Include="Edits\Views.fs" />
     <Compile Include="Edits\Handlers.fs" />
     <Compile Include="Edits\Routes.fs" />
     <Compile Include="Config\Types.fs" />
