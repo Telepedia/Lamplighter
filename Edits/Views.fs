@@ -1,5 +1,8 @@
 module Lamplighter.Edits.Views
 
+open System
+open System.Globalization
+open Giraffe
 open Lamplighter.Shared
 open Lamplighter.Edits.Types
 open Giraffe.ViewEngine
@@ -7,9 +10,19 @@ open Giraffe.ViewEngine
 let private scoreText (score: float option) =
     score |> Option.map (sprintf "%.2f") |> Option.defaultValue "—"
 
+let private timeToHuman (time: string) =
+    let t = DateTime.ParseExact(
+        time,
+        "yyyyMMddHHmmss",
+        CultureInfo.InvariantCulture,
+        DateTimeStyles.AssumeUniversal ||| DateTimeStyles.AdjustToUniversal
+    )
+    
+    t.ToString("dd MMM yyyy, HH:mm")
+    
 let private editRow (edit: FlaggedEdit) =
     tr [] [
-        td [] [ str edit.Received ]
+        td [] [ str (timeToHuman edit.Received) ]
         td [] [ str edit.Wiki ]
         td [] [ a [ _href $"/edits/{edit.Id}" ] [ str edit.Page ] ]
         td [] [ str edit.Editor ]
@@ -28,7 +41,7 @@ let indexView (edits: FlaggedEdit list) =
                 table [ _class "lamplighter-edits__table" ] [
                     thead [] [
                         tr [] [
-                            th [] [ str "Received" ]
+                            th [] [ str "Received (UTC)" ]
                             th [] [ str "Wiki" ]
                             th [] [ str "Page" ]
                             th [] [ str "Editor" ]
