@@ -19,7 +19,7 @@ let private editRow (edit: FlaggedEdit) =
     ]
 
 let indexView (edits: FlaggedEdit list) =
-    Layout.main "Edits – Lamplighter" [
+    Layout.main Layout.Edits "Edits – Lamplighter" [
         section [ _class "lamplighter-edits" ] [
             h2 [] [ str "Edits" ]
             match edits with

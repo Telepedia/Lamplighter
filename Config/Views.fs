@@ -111,7 +111,7 @@ let private history (versions: ConfigVersion list) =
     ]
 
 let configView (versions: ConfigVersion list) (threshold: float option) (thresholdError: string option) =
-    Layout.main "Configuration – Lamplighter" [
+    Layout.main Layout.Config "Configuration – Lamplighter" [
         section [ _class "lamplighter-config" ] [
             h2 [] [ str "Configuration" ]
             p [ _class "lamplighter-config__description" ] [
@@ -124,7 +124,7 @@ let configView (versions: ConfigVersion list) (threshold: float option) (thresho
     ]
 
 let newVersionView (values: VersionForm) (errors: string list) =
-    Layout.main "New configuration – Lamplighter" [
+    Layout.main Layout.Config "New configuration – Lamplighter" [
         section [ _class "lamplighter-config" ] [
             h2 [] [ str "New configuration version" ]
             p [ _class "lamplighter-config__description" ] [

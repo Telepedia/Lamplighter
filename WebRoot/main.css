@@ -29,31 +29,84 @@
 
 :root {
     --body-primary: 'Quicksand', Helvetica, Arial, sans-serif;
+    --nav-width: 48px;
+    --nav-background: #232325;
+    --nav-active-background: #38383b;
+    --nav-text: #e8e6e3;
+    --nav-text-muted: #9a9a9f;
+    --accent: #f2a93b;
 }
 
-.lamplighter-header {
-    height: 50px;
-    background: #322659;
+.lamplighter-nav {
+    position: sticky;
+    top: 0;
+    flex: 0 0 var(--nav-width);
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    padding: 10px 0;
+    background: var(--nav-background);
+    color: var(--nav-text);
+}
+
+.lamplighter-nav__logo {
+    display: flex;
+    justify-content: center;
+    margin: 0 6px 8px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgb(255 255 255 / 0.12);
     font-family: 'Rubik', Helvetica, Arial, sans-serif;
-    color: #fff;
-    box-sizing: border-box;
+    font-size: 1.25rem;
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: -0.04em;
+}
 
-    .lamplighter-header__content {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        height: 100%;
-        margin-inline: 24px;
-    }
+.lamplighter-nav__links {
+    display: flex;
+    flex-direction: column;
+}
 
-    .lamplighter-logo {
-        font-weight: bolder;
-        font-size: 1.25rem;
-    }
+.lamplighter-nav__links--bottom {
+    margin-top: auto;
+}
+
+.lamplighter-nav__link {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: var(--nav-width);
+    color: var(--nav-text-muted);
+}
+
+.lamplighter-nav__link:hover {
+    color: var(--nav-text);
+}
+
+.lamplighter-nav__link--active {
+    color: var(--nav-text);
+    background: var(--nav-active-background);
+}
+
+.lamplighter-nav__link--active::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 8px;
+    bottom: 8px;
+    width: 3px;
+    background: var(--accent);
+}
+
+body {
+    display: flex;
+    background: #ebebef;
 }
 
 main {
-    width: 100%;
+    flex: 1;
+    min-width: 0;
     max-width: 1200px;
     margin: 0 auto;
     padding: 20px;

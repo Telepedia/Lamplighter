@@ -4,7 +4,7 @@ open Lamplighter.Shared
 open Giraffe.ViewEngine
 
 let homeView=
-    Layout.main "Lamplighter" [
+    Layout.main Layout.Dashboard "Lamplighter" [
         section [ _class "lamplighter-overview" ] [
             h2 [] [ str "Welcome to Lamplighter 🔥" ]
             p [ _class "lamplighter-overview__description" ] [
