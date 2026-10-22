@@ -131,6 +131,7 @@ main table {
     border: 1px solid #dcd9e2;
     font-size: 0.875rem;
     font-variant-numeric: tabular-nums;
+    background: #fff;
 }
 
 main th,
