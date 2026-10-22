@@ -4,7 +4,6 @@ open System.Data
 open System.Data.Common
 open System.Threading.Tasks
 open Donald
-open Lamplighter.Home
 open Microsoft.AspNetCore.Http
 open Giraffe
 open Lamplighter.Edits.Types
