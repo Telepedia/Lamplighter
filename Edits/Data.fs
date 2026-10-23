@@ -83,3 +83,13 @@ let modelFor (edit: FlaggedEdit) (createConnection: unit -> IDbConnection) : str
     |> Db.setParams [ "id", SqlType.Int64 edit.ConfigVersionId ]
     |> Db.querySingle (fun (rd: IDataReader) -> rd.ReadString "model")
     |> Option.defaultValue "Unknown"
+
+// release any scoring jobs that were claimed but have not ran for whatever reason, if they
+// have been claimed for more than 10 minutes
+let releaseStaleClaims (createConnection: unit -> IDbConnection) =
+    use conn = createConnection ()
+    conn
+    |> Db.newCommand """
+        UPDATE edits SET claimed_at = NULL WHERE claimed_at < strftime('%Y-%m-%dT%H:%M:%SZ', 'now', '-10 minutes')
+    """
+    |> Db.exec

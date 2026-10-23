@@ -25,7 +25,9 @@ let private migrations = [
         scoring_attempts    INTEGER NOT NULL DEFAULT 0,
         review_status   TEXT NOT NULL DEFAULT 'unreviewed' CHECK (review_status IN ('unreviewed', 'approved', 'reverted')),
         reviewed_at     TEXT,
-        reviewed_by     TEXT
+        reviewed_by     TEXT,
+        claimed_at      TEXT,
+        next_attempt_at TEXT;
     )
     """
 
