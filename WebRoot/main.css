@@ -35,6 +35,8 @@
     --nav-text: #e8e6e3;
     --nav-text-muted: #9a9a9f;
     --accent: #f2a93b;
+    --flagged: #b42318;
+    --border: #dcd9e2;
 }
 
 .lamplighter-nav {
@@ -166,4 +168,11 @@ main td a {
 
 main td a:hover {
     text-decoration: underline;
+}
+
+h2 {
+    font-size: 2rem;
+    font-weight: 900;
+    font-family: 'Rubik', Helvetica, Arial, sans-serif;
+    margin-bottom: 16px;
 }
