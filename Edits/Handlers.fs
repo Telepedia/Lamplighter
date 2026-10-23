@@ -68,3 +68,16 @@ let index : HttpHandler =
     fun next ctx ->
         let edits = Data.listEdits (ctx.GetService<unit -> IDbConnection>())
         htmlView (Views.indexView edits) next ctx
+
+// Show an individual edit from the database
+let individualEdit (id: int64) : HttpHandler =
+    fun next ctx ->
+        let db = ctx.GetService<unit -> IDbConnection>()
+        match Data.fromId (id) db with
+            | Some edit ->
+                let answers = Data.answersFor edit db
+                let model = Data.modelFor edit db
+                let threshold = Lamplighter.Config.Data.getThreshold db
+                htmlView (Views.editView edit model answers threshold) next ctx
+            // need to make a proper edit page but alas
+            | None -> RequestErrors.NOT_FOUND "No such edit" next ctx
