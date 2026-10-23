@@ -93,3 +93,44 @@ let releaseStaleClaims (createConnection: unit -> IDbConnection) =
         UPDATE edits SET claimed_at = NULL WHERE claimed_at < strftime('%Y-%m-%dT%H:%M:%SZ', 'now', '-10 minutes')
     """
     |> Db.exec
+    
+let private ofDataReader (rd: IDataReader) : FlaggedEdit =
+    { Id = rd.ReadInt64 "id"
+      Wiki = rd.ReadString "wiki"
+      WikiId = rd.ReadString "wiki_id"
+      Page = rd.ReadString "page"
+      Url = rd.ReadString "url"
+      Editor = rd.ReadString "editor"
+      Summary = rd.ReadString "summary"
+      Diff = rd.ReadString "diff"
+      Received = rd.ReadString "received"
+      ConfigVersionId = rd.ReadInt64 "config_version_id"
+      Score = rd.ReadDoubleOption "score"
+      ScoringStatus = ScoringStatus.parse (rd.ReadString "scoring_status")
+      ReviewStatus = ReviewStatus.parse (rd.ReadString "review_status") }
+
+// Claim the oldest edit that is due for scoring, so no other worker picks it up; it returns None if there is nothing
+// to score
+// this is a horrible query but alas 'tis what we must do
+let claimNext (maxAttempts: int) (createConnection: unit -> IDbConnection) : FlaggedEdit option =
+    use conn = createConnection ()
+    conn
+    |> Db.newCommand """
+        UPDATE edits
+        SET claimed_at = strftime('%Y-%m-%dT%H:%M:%SZ', 'now')
+        WHERE id = (
+            SELECT id
+            FROM edits
+            WHERE claimed_at IS NULL
+              AND (scoring_status = 'pending'
+                   OR (scoring_status = 'failed' AND scoring_attempts < @max_attempts))
+              AND (next_attempt_at IS NULL
+                   OR next_attempt_at <= strftime('%Y-%m-%dT%H:%M:%SZ', 'now'))
+            ORDER BY id
+            LIMIT 1
+        )
+        RETURNING id, wiki, wiki_id, page, url, editor, summary, diff, received,
+                  config_version_id, score, scoring_status, review_status
+        """
+    |> Db.setParams [ "max_attempts", SqlType.Int32 maxAttempts ]
+    |> Db.querySingle ofDataReader
