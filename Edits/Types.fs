@@ -62,3 +62,11 @@ type IncomingEdit = {
     Timestamp: string
     Diff: string
 }
+
+// this just combines the question (taken from the config version the edit was scored against) and the
+// answer from the model
+type QuestionAnswer = {
+    QuestionId: int64
+    Text: string
+    Probability: float option
+}
