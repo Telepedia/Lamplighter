@@ -27,7 +27,7 @@ let private migrations = [
         reviewed_at     TEXT,
         reviewed_by     TEXT,
         claimed_at      TEXT,
-        next_attempt_at TEXT;
+        next_attempt_at TEXT
     )
     """
 
