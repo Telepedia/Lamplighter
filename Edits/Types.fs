@@ -70,3 +70,19 @@ type QuestionAnswer = {
     Text: string
     Probability: float option
 }
+
+// An individual question that the model should score
+type ScoringQuestion = {
+    Id: int64
+    Text: string
+}
+
+// All of the stuff we need to score an edit against the pinned config version
+type ScoringConfig = {
+    Model: string
+    PromptTemplate: string option
+    // Jev doesn't use temperature, but a few of the other models on OpenRouter
+    // do so we're keeping it in the event we need to switch the model
+    Temperature: float option
+    Questions: ScoringQuestion list
+}

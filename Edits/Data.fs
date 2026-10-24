@@ -134,3 +134,33 @@ let claimNext (maxAttempts: int) (createConnection: unit -> IDbConnection) : Fla
         """
     |> Db.setParams [ "max_attempts", SqlType.Int32 maxAttempts ]
     |> Db.querySingle ofDataReader
+   
+// Return the scoring config for a specific edit 
+let scoringConfigFor (edit: FlaggedEdit) (createConnection: unit -> IDbConnection) : ScoringConfig option =
+   use conn = createConnection ()
+   let version =
+       conn
+       |> Db.newCommand """
+            SELECT model, prompt_template, temperature FROM config_versions WHERE id = @id
+        """
+       |> Db.setParams [ "id", SqlType.Int64 edit.ConfigVersionId ]
+       |> Db.querySingle (fun (rd: IDataReader) ->
+           rd.ReadString "model", rd.ReadStringOption "prompt_template", rd.ReadDoubleOption "temperature")
+       
+   match version with
+    | None -> None
+    | Some (model, promptTemplate, temperature) ->
+        let questions =
+            conn
+            |> Db.newCommand """
+                SELECT id, text FROM config_questions WHERE version_id = @id ORDER BY position
+            """
+            |> Db.setParams [ "id", SqlType.Int64 edit.ConfigVersionId ]
+            |> Db.query (fun (rd: IDataReader) -> { Id = rd.ReadInt64 "id"; Text = rd.ReadString "text" })
+        
+        Some {
+            Model = model
+            PromptTemplate = promptTemplate
+            Temperature = temperature
+            Questions = questions
+        }
