@@ -164,3 +164,62 @@ let scoringConfigFor (edit: FlaggedEdit) (createConnection: unit -> IDbConnectio
             Temperature = temperature
             Questions = questions
         }
+
+// Save the answers returned by the model to the database, and its overall score;
+// we do in transaction to avoid half-score if there is an error
+let saveResults (editId: int64) (answers: (int64 * float) list) (score: float) (createConnection: unit -> IDbConnection) =
+    use conn = createConnection ()
+    conn
+    |> Db.batch (fun tran ->
+        Db.newCommandForTransaction """
+            INSERT INTO edit_answers (edit_id, question_id, probability)
+            VALUES (@edit_id, @question_id, @probability)
+            """ tran
+        |> Db.execMany (
+            answers
+            |> List.map (fun (questionId, probability) -> [
+                "edit_id", SqlType.Int64 editId
+                "question_id", SqlType.Int64 questionId
+                "probability", SqlType.Double probability
+            ]))
+
+        Db.newCommandForTransaction """
+            UPDATE edits
+            SET score = @score,
+                scoring_status = 'scored',
+                scoring_error = NULL,
+                claimed_at = NULL,
+                next_attempt_at = NULL
+            WHERE id = @id
+            """ tran
+        |> Db.setParams [
+            "score", SqlType.Double score
+            "id", SqlType.Int64 editId
+        ]
+        |> Db.exec)
+
+// Record a failed scoring attempt and schedule the retry
+// we retry 1 minute after the first failure, then 5 after the second, then 30.
+// we only allow 3 attempts and then we stop trying to score this edit
+let recordFailure (editId: int64) (error: string) (createConnection: unit -> IDbConnection) =
+    use conn = createConnection ()
+    conn
+    |> Db.newCommand """
+        UPDATE edits
+        SET scoring_status = 'failed',
+            scoring_attempts = scoring_attempts + 1,
+            scoring_error = @error,
+            claimed_at = NULL,
+            next_attempt_at = strftime('%Y-%m-%dT%H:%M:%SZ', 'now',
+                CASE scoring_attempts
+                    WHEN 0 THEN '+1 minutes'
+                    WHEN 1 THEN '+5 minutes'
+                    ELSE '+30 minutes'
+                END)
+        WHERE id = @id
+        """
+    |> Db.setParams [
+        "error", SqlType.String error
+        "id", SqlType.Int64 editId
+    ]
+    |> Db.exec
